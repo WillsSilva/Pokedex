@@ -1,0 +1,31 @@
+@baseUrl = http://localhost:3000
+### Pesquisa todos os cursos
+GET {{baseUrl}}/api/Poke
+
+### Pesquisa curso específico
+GET {{baseUrl}}/api/Poke/660dae17c3f2bdbad488ca58
+
+### Pesquisa curso específico
+POST {{baseUrl}}/api/Poke
+Content-Type: application/json
+
+{
+"name": "Teste",
+"species": "Curso Superior de Agronomia",
+"abilities": "http://ifrs.edu.br/bento",
+"hp": 222,
+"attack": 555,
+"defense": 888,
+"speed": 777
+}
+
+### Altera a conta com id=1
+PUT {{baseUrl}}/api/Poke/660dae17c3f2bdbad488ca58
+Content-Type: application/json
+
+{
+"number": 1
+}
+
+### Exclui uma conta específica
+DELETE {{baseUrl}}/api/Poke/6607719206686898a3698fa7

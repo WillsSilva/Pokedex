@@ -4,7 +4,6 @@ const faker = require("faker");
 const Pokedexchema = new mongoose.Schema({
     number: {
         type: Number,
-        required: true,
         unique: true, // Garante que o número seja único
     },
     name: {
@@ -20,21 +19,21 @@ const Pokedexchema = new mongoose.Schema({
         required: true,
     },
     hp: {
-        type: int,
+        type: Number,
         required: true,
     },
     attack: {
-        type: int,
+        type: Number,
         required: true,
     },
     defense: {
-        type: int,
+        type: Number,
         required: true,
     },
     speed: {
-        type: int,
+        type: Number,
         required: true,
-    },    
+    },
 });
 
 const Pokedex = mongoose.model("Pokedex", Pokedexchema);
@@ -45,23 +44,62 @@ const usedNumbers = new Set();
 const generateUniqueNumber = () => {
     let number;
     do {
-        number = faker.random.number();
+        number = faker.datatype.number();
     } while (usedNumbers.has(number)); // Verifica se o número já foi usado
     usedNumbers.add(number); // Adiciona o número ao conjunto de números usados
     return number;
 };
 
+// Mapeamento de espécies para nomes disponíveis
+const namesBySpecies = {
+    "Planta": ["Bulbasaur", "Ivysaur", "Venusaur"],
+    "Fogo": ["Charmander", "Charmeleon", "Charizard"],
+    "Agua": ["Squirtle", "Wartortle", "Blastoise"],
+    "Normal": ["Rattata", "Raticate", "Pidgey"],    
+    // Adicione mais espécies e nomes conforme necessário
+};
+
+const speciesList = ["Planta", "Fogo", "Agua", "Normal"];
+
+// Função para selecionar aleatoriamente um item de uma lista
+const getRandomItem = (list) => {
+    const randomIndex = Math.floor(Math.random() * list.length);
+    return list[randomIndex];
+};
+
+// Função para selecionar aleatoriamente um nome com base na espécie
+const getRandomNameBySpecies = (species) => {
+    const availableNames = namesBySpecies[species] || []; // Obtém a lista de nomes para a espécie fornecida
+    if (availableNames.length === 0) {
+        console.warn(`Nenhum nome disponível para a espécie '${species}'.`);
+        return null;
+    }
+    return getRandomItem(availableNames);
+};
+
 // Função para gerar dados aleatórios para a Pokedex
 const generateRandomPokedexData = () => {
+    const species = getRandomItem(speciesList); // Seleciona uma espécie aleatória
+    const name = getRandomNameBySpecies(species); // Seleciona um nome aleatório com base na espécie
+
+    if (!name) {
+        // Se não houver nomes disponíveis para a espécie selecionada, retorna null
+        return null;
+    }
+
     return {
         number: generateUniqueNumber(),
+        name: name,
+        species: species,
         abilities: faker.random.word(),
-        hp: faker.random.int(),
-        attack: faker.random.int(),
-        speed: faker.random.int(),
-        defense: faker.random.int(),
+        hp: faker.datatype.number(),
+        attack: faker.datatype.number(),
+        speed: faker.datatype.number(),
+        defense: faker.datatype.number(),
     };
 };
+
+
 
 // Exemplo de uso: gerar um novo registro na Pokedex com dados aleatórios
 const createRandomPokedexEntry = async () => {
@@ -75,5 +113,5 @@ const createRandomPokedexEntry = async () => {
     }
 };
 
-// Chamada da função para criar um novo registro aleatório na Pokedex
-createRandomPokedexEntry();
+// // Chamada da função para criar um novo registro aleatório na Pokedex
+// createRandomPokedexEntry();
