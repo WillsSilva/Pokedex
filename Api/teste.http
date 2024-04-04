@@ -10,13 +10,14 @@ POST {{baseUrl}}/api/Poke
 Content-Type: application/json
 
 {
-"name": "Teste",
-"species": "Curso Superior de Agronomia",
-"abilities": "http://ifrs.edu.br/bento",
-"hp": 222,
-"attack": 555,
-"defense": 888,
-"speed": 777
+"name": "Pikachu",
+"species": "Eletrico",
+"abilities": "Raio",
+"hp": 2222,
+"attack": 5556,
+"defense": 8887,
+"speed": 7771,
+"number": 1
 }
 
 ### Altera a conta com id=1
@@ -28,4 +29,4 @@ Content-Type: application/json
 }
 
 ### Exclui uma conta específica
-DELETE {{baseUrl}}/api/Poke/6607719206686898a3698fa7
+DELETE {{baseUrl}}/api/Poke/66077424818852eececedcff

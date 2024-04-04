@@ -1,9 +1,16 @@
 // Importando as dependências do projeto
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require('cors');
 const requireDir = require("require-dir");
 // Cria uma aplicação Express
 const app = express();
+
+app.use(cors({
+    origin: 'http://localhost:5173',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 //Permitir enviar dados para a App no formato JSON
 app.use(express.json());
