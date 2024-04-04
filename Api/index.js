@@ -23,6 +23,7 @@ requireDir("./models");
 // Redireciona o caminho http://localhost:3000/api para o routes
 app.use('/api', require('./routes'));
 // Inicia o servidor na porta '3000'
-app.listen(3000, () => {
-    console.log("Exemplo de aplicativo ouvindo a porta 3000");
-});
+app.listen(3001, () => {
+    console.log('Servidor está rodando na porta 3001');
+  });
+  

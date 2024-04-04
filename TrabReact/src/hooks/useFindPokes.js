@@ -1,19 +1,19 @@
 import { useEffect, useState } from 'react';
 import axios from "axios";
 
-export function useFindBooks() {
+export function useFindPokes() {
 
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    async function listBooksuseFindBooks() {
+    async function listPokemonsuseFindPokes() {
         try {
 
             await new Promise(resolve => setTimeout(resolve, 1500));
 
             const result = await
-                axios.get('https://fakerestapi.azurewebsites.net/api/v1/Books');
+                axios.get('http://localhost:3001/api/Poke');
             setLoading(false);
 
             if (result.data) {
@@ -32,7 +32,7 @@ export function useFindBooks() {
         setLoading(true);
         setError(null);
 
-        listBooksuseFindBooks();
+        listPokemonsuseFindPokes();
     }, []);
     return { data, loading, error };
 }

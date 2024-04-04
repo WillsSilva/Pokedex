@@ -1,4 +1,4 @@
-@baseUrl = http://localhost:3000
+@baseUrl = http://localhost:3001
 ### Pesquisa todos os cursos
 GET {{baseUrl}}/api/Poke
 
@@ -21,11 +21,11 @@ Content-Type: application/json
 }
 
 ### Altera a conta com id=1
-PUT {{baseUrl}}/api/Poke/660dae17c3f2bdbad488ca58
+PUT {{baseUrl}}/api/Poke/660d9fe7a27d8474e7172113
 Content-Type: application/json
 
 {
-"number": 1
+"name": "bulbasaur"
 }
 
 ### Exclui uma conta específica

@@ -5,11 +5,15 @@ import { format } from 'date-fns';
 import * as Yup from 'yup'; // Importe a biblioteca Yup para validação
 
 const validationSchema = Yup.object().shape({
-  title: Yup.string().required('O título é obrigatório'),
-  description: Yup.string().required('A descrição é obrigatória'),
-  pageCount: Yup.number().min(0, 'O número de páginas deve ser maior ou igual a 0').required('O número de páginas é obrigatório'),
-  excerpt: Yup.string().required('O excerto é obrigatório'),
+  name: Yup.string().required('O Nome é obrigatório'),
+  species: Yup.string().required('O tipo é obrigatória'),
+  hp: Yup.number().required('O hp é obrigatório'),
+  abilities: Yup.string().required('O excerto é obrigatório'),
   publishDate: Yup.date().required('A data de publicação é obrigatória'),
+  attack: Yup.number().required('O poder de attack é obrigatório'),
+  defense: Yup.number().required('O poder de defessa é obrigatório'),
+  speed: Yup.number().required('O poder de speed é obrigatório'),
+
 });
 
 const Editar = () => {

@@ -1,10 +1,10 @@
 import React from 'react';
-import { useFindBooks } from './../hooks/useFindBooks';
+import { useFindPokes } from './../hooks/useFindPokes';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 
 const Home = () => {
-  const { data, loading, error } = useFindBooks();
+  const { data, loading, error } = useFindPokes();
   const navigate = useNavigate();
 
   if (loading) return <LoadingSpinner />;
@@ -20,21 +20,21 @@ const Home = () => {
 
   return (
     <div className="app-container">
-      <h1 className="app-title">Lista de Livros</h1>
-      <button id="Add" onClick={onAddBook} >Adicionar</button>
-      <ul className="book-list">
+      <h1 className="app-title">Lista de Pokemons</h1>
+      <div className="book-list">
         {data &&
           data.length > 0 &&
-          data.map((item) => (
+          data.map((item, index) => (
             <BookItem
               key={item.id}
-              title={item.title}
-              description={item.description}
+              title={item.name}
+              species={item.species}
               onEdit={() => onEditBook(item.id)}
               onDelete={() => onDeleteBook(item.id)}
             />
           ))}
-      </ul>
+      </div>
+      <button id="Add" onClick={onAddBook}>Adicionar</button>
     </div>
   );
 };
@@ -42,7 +42,7 @@ const Home = () => {
 function LoadingSpinner() {
   return (
     <div className="loading-container">
-      <img src="https://media.tenor.com/6gHLhmwO87sAAAAj/gg.gif" alt="Loading" />
+      <img src="https://media.tenor.com/5tLX-5mJCwgAAAAi/pichu-pokemon.gif" alt="Loading" />
     </div>
   );
 }
@@ -51,23 +51,19 @@ function ErrorDisplay({ error }) {
   return <div className="error-container">{error}</div>;
 }
 
-function BookItem({ title, description, onDelete, onEdit }) {
-  const [showDescription, setShowDescription] = React.useState(false);
-
-  const toggleDescription = () => {
-    setShowDescription(!showDescription);
-  }
-
+function BookItem({ title, species, onDelete, onEdit }) {
   return (
-    <li className="book-item">
+    <div className="book-item">
       <strong className="book-title">{title}</strong>
-      {showDescription && <p className="book-description">{description}</p>}
-      <button onClick={toggleDescription} id="MostarOcultar">Mostrar/Esconder Descrição</button>
-      <button onClick={onEdit} id="Editar">
-        <Link to="/" id="EditarL">Editar</Link>
-      </button>
-      <button onClick={onDelete} id="Excluir">Excluir</button>          
-    </li>
+      <img src={`https://projectpokemon.org/images/normal-sprite/${title}.gif`} alt={title} style={{ width: '50px', height: '50px' }} />
+      <p className="book-description">{species}</p>
+      <div className="button-group">
+        <button onClick={onEdit} id="Editar">
+          <Link to="/" id="EditarL">Editar</Link>
+        </button>
+        <button onClick={onDelete} id="Excluir">Excluir</button>
+      </div>
+    </div>
   );
 }
 

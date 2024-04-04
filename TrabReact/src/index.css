@@ -204,3 +204,30 @@ button:focus-visible {
 }
 
 
+.book-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.book-item {
+  width: calc(20.33% - 20px); /* Ajuste a largura conforme necessário */
+  margin: 10px;
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+.book-title {
+  font-weight: bold;
+}
+
+.book-description {
+  margin-top: 5px;
+}
+
+.button-group {
+  margin-top: 10px;
+}
+
+.button-group button {
+  margin-right: 10px;
+}

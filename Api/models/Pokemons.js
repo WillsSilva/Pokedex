@@ -52,11 +52,11 @@ const generateUniqueNumber = () => {
 
 // Mapeamento de espécies para nomes disponíveis
 const namesBySpecies = {
-    "Planta": ["Bulbasaur", "Ivysaur", "Venusaur"],
-    "Fogo": ["Charmander", "Charmeleon", "Charizard", "Chimchar"],
-    "Agua": ["Squirtle", "Wartortle", "Blastoise", "Piplup"],
-    "Normal": ["Rattata", "Raticate", "Pidgey"],
-    "Terra": ["Diglett", "Dugtrio", "Torterra"],    
+    "Planta": ["bulbasaur", "ivysaur", "venusaur"],
+    "Fogo": ["charmander", "charmeleon", "charizard", "chimchar"],
+    "Agua": ["squirtle", "wartortle", "blastoise", "piplup"],
+    "Normal": ["rattata", "raticate", "pidgey"],
+    "Terra": ["diglett", "dugtrio", "torterra"],    
     // Adicione mais espécies e nomes conforme necessário
 };
 
