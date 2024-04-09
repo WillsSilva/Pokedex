@@ -2,39 +2,57 @@ import React from 'react';
 import { useFindPokes } from './../hooks/useFindPokes';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+//import { createRandomPokedexEntry } from '../../../Api/models/Pokemons'; // Importe aqui usando a sintaxe ES6
 
 const Home = () => {
-  const { data, loading, error } = useFindPokes();
+  const { data, loading, error, refetch } = useFindPokes();
   const navigate = useNavigate();
 
   if (loading) return <LoadingSpinner />;
   if (error) return <ErrorDisplay error={error} />;
 
-  const onEditBook = (id) => {
+  const onEditPoke = (id) => {
     navigate(`/editar/${id}`);
   };
 
-  const onAddBook = () => {
-    navigate('/editar'); 
+  const onAddPoke = () => {
+    navigate('/editar');
   };
+
+  const onDeletePoke = async (id) => {
+    try {
+      await axios.delete(`http://localhost:3001/api/Poke/${id}`);
+      alert("Pokemon excluído!");
+      refetch(); // Recarrega os dados após a exclusão
+    } catch (error) {
+      console.error(error);
+      alert("Erro ao apagar o Pokemon!");
+    }
+  };
+
+  // const onCreateRandomPokedexEntry = async () => { // Função para criar um novo registro aleatório
+  //   await createRandomPokedexEntry();
+  //   refetch(); // Recarrega os dados após a criação
+  // };
 
   return (
     <div className="app-container">
       <h1 className="app-title">Lista de Pokemons</h1>
-      <div className="book-list">
+      <div className="poke-list">
         {data &&
           data.length > 0 &&
           data.map((item, index) => (
-            <BookItem
-              key={item.id}
+            <PokeItem
+              key={item._id}
               title={item.name}
               species={item.species}
-              onEdit={() => onEditBook(item.id)}
-              onDelete={() => onDeleteBook(item.id)}
+              onEdit={() => onEditPoke(item._id)}
+              onDelete={() => onDeletePoke(item._id)}
             />
           ))}
       </div>
-      <button id="Add" onClick={onAddBook}>Adicionar</button>
+      <button id="Add" onClick={onAddPoke}>Adicionar</button>
+
     </div>
   );
 };
@@ -51,12 +69,12 @@ function ErrorDisplay({ error }) {
   return <div className="error-container">{error}</div>;
 }
 
-function BookItem({ title, species, onDelete, onEdit }) {
+function PokeItem({ title, species, onDelete, onEdit }) {
   return (
-    <div className="book-item">
-      <strong className="book-title">{title}</strong>
+    <div className="poke-item">
+      <strong className="poke-title">{title}</strong>
       <img src={`https://projectpokemon.org/images/normal-sprite/${title}.gif`} alt={title} style={{ width: '50px', height: '50px' }} />
-      <p className="book-description">{species}</p>
+      <p className="poke-description">{species}</p>
       <div className="button-group">
         <button onClick={onEdit} id="Editar">
           <Link to="/" id="EditarL">Editar</Link>
@@ -65,18 +83,6 @@ function BookItem({ title, species, onDelete, onEdit }) {
       </div>
     </div>
   );
-}
-
-function onDeleteBook(id) {
-  axios.delete(`http://localhost:3000/api/Books/${id}`)
-    .then(response => {
-      console.log(response.status);
-      alert("Livro apagado!");
-    })
-    .catch(error => {
-      console.error(error);
-      alert("Erro ao apagar o livro!")
-    });
 }
 
 export default Home;

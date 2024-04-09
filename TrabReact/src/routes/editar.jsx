@@ -1,34 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
-import { format } from 'date-fns';
-import * as Yup from 'yup'; // Importe a biblioteca Yup para validação
+import * as Yup from 'yup';
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string().required('O Nome é obrigatório'),
-  species: Yup.string().required('O tipo é obrigatória'),
-  hp: Yup.number().required('O hp é obrigatório'),
-  abilities: Yup.string().required('O excerto é obrigatório'),
-  publishDate: Yup.date().required('A data de publicação é obrigatória'),
-  attack: Yup.number().required('O poder de attack é obrigatório'),
-  defense: Yup.number().required('O poder de defessa é obrigatório'),
-  speed: Yup.number().required('O poder de speed é obrigatório'),
-
+  name: Yup.string().required('O nome do Pokémon é obrigatório'),
+  species: Yup.string().required('A espécie do Pokémon é obrigatória'),
+  hp: Yup.number().required('O HP do Pokémon é obrigatório'),
+  abilities: Yup.string().required('As habilidades do Pokémon são obrigatórias'),
+  attack: Yup.number().required('O poder de ataque do Pokémon é obrigatório'),
+  defense: Yup.number().required('O poder de defesa do Pokémon é obrigatório'),
+  speed: Yup.number().required('O poder de velocidade do Pokémon é obrigatório'),
 });
 
 const Editar = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [editedBook, setEditedBook] = useState({});
+  const [editedPokemon, setEditedPokemon] = useState({});
   const [isEditing, setIsEditing] = useState(false);
-  const [validationErrors, setValidationErrors] = useState({}); // Estado para rastrear erros de validação
+  const [validationErrors, setValidationErrors] = useState({});
 
   useEffect(() => {
     if (id) {
       setIsEditing(true);
-      axios.get(`https://fakerestapi.azurewebsites.net/api/v1/Books/${id}`)
+      axios.get(`http://localhost:3001/api/Poke/${id}`)
         .then((response) => {
-          setEditedBook(response.data);
+          setEditedPokemon(response.data);
         })
         .catch((error) => {
           console.error(error);
@@ -40,7 +37,7 @@ const Editar = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setEditedBook((prevBook) => ({ ...prevBook, [name]: value }));
+    setEditedPokemon((prevPokemon) => ({ ...prevPokemon, [name]: value }));
   };
 
   const handleCancel = () => {
@@ -50,18 +47,19 @@ const Editar = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    validationSchema.validate(editedBook, { abortEarly: false })
+    validationSchema.validate(editedPokemon, { abortEarly: false })
       .then(() => {
         const apiUrl = isEditing
-          ? `http://localhost:3000/api/Books/${id}`
-          : 'http://localhost:3000/api/Books';
+          ? `http://localhost:3001/api/Poke/${id}`
+          : 'http://localhost:3001/api/Poke';
 
         const method = isEditing ? 'put' : 'post';
 
-        axios[method](apiUrl, editedBook)
+        axios[method](apiUrl, editedPokemon)
           .then((response) => {
             console.log(response.status);
-            if (response.status = '200') alert ("Salvo!");
+            if (response.status === 200) alert("Salvo!");
+            if (response.status === 201) alert("Pokemon adicionado!");
           })
           .catch((error) => {
             console.error(error);
@@ -76,33 +74,37 @@ const Editar = () => {
       });
   };
 
-  const formattedDate = editedBook.publishDate
-    ? format(new Date(editedBook.publishDate), "yyyy-MM-dd'T'HH:mm")
-    : '';
-
   return (
-    <div className="edit-book-form">
-      <h2>{isEditing ? 'Editar Livro' : 'Adicionar Livro'}</h2>
+    <div className="edit-pokemon-form">
+      <h2>{isEditing ? 'Editar Pokémon' : 'Adicionar Pokémon'}</h2>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="title">Titulo:</label>
-        {validationErrors.title && <span className="error-message">{validationErrors.title}</span>}
-        <input type="text" id="title" name="title" value={editedBook.title || ''} onChange={handleInputChange} />
+        <label htmlFor="name">Nome:</label>
+        {validationErrors.name && <span className="error-message">{validationErrors.name}</span>}
+        <input type="text" id="name" name="name" value={editedPokemon.name || ''} onChange={handleInputChange} />
 
-        <label htmlFor="description">Descrição:</label>
-        {validationErrors.description && <span className="error-message">{validationErrors.description}</span>}
-        <textarea id="description" name="description" rows={5} value={editedBook.description || ''} onChange={handleInputChange} style={{ resize: 'vertical' }} />
+        <label htmlFor="species">Espécie:</label>
+        {validationErrors.species && <span className="error-message">{validationErrors.species}</span>}
+        <input type="text" id="species" name="species" value={editedPokemon.species || ''} onChange={handleInputChange} />
 
-        <label htmlFor="title">Numero de páginas:</label>
-        {validationErrors.pageCount && <span className="error-message">{validationErrors.pageCount}</span>}
-        <input type="number" id="pages" name="pageCount" value={editedBook.pageCount || ''} onChange={handleInputChange} min={0} step={1} />
+        <label htmlFor="hp">HP:</label>
+        {validationErrors.hp && <span className="error-message">{validationErrors.hp}</span>}
+        <input type="number" id="hp" name="hp" value={editedPokemon.hp || ''} onChange={handleInputChange} />
 
-        <label htmlFor="excerto">Excerto:</label>
-        {validationErrors.excerpt && <span className="error-message">{validationErrors.excerpt}</span>}
-        <textarea id="excerto" name="excerpt" rows={10} value={editedBook.excerpt || ''} onChange={handleInputChange} style={{ resize: 'vertical' }} />
+        <label htmlFor="abilities">Habilidades:</label>
+        {validationErrors.abilities && <span className="error-message">{validationErrors.abilities}</span>}
+        <input type="text" id="abilities" name="abilities" rows={5} value={editedPokemon.abilities || ''} onChange={handleInputChange} style={{ resize: 'vertical' }} />
 
-        <label htmlFor="title">Data da publicação:</label>
-        {validationErrors.publishDate && <span className="error-message">{validationErrors.publishDate}</span>}
-        <input type="datetime-local" id="publishDate" name="publishDate" value={formattedDate} onChange={handleInputChange} />
+        <label htmlFor="attack">Ataque:</label>
+        {validationErrors.attack && <span className="error-message">{validationErrors.attack}</span>}
+        <input type="number" id="attack" name="attack" value={editedPokemon.attack || ''} onChange={handleInputChange} />
+
+        <label htmlFor="defense">Defesa:</label>
+        {validationErrors.defense && <span className="error-message">{validationErrors.defense}</span>}
+        <input type="number" id="defense" name="defense" value={editedPokemon.defense || ''} onChange={handleInputChange} />
+
+        <label htmlFor="speed">Velocidade:</label>
+        {validationErrors.speed && <span className="error-message">{validationErrors.speed}</span>}
+        <input type="number" id="speed" name="speed" value={editedPokemon.speed || ''} onChange={handleInputChange} />
 
         <button type="submit">{isEditing ? 'Salvar' : 'Adicionar'}</button>
         <button type="button" onClick={handleCancel}>Cancelar</button>

@@ -17,7 +17,7 @@ app.use(express.json());
 
 //const uri = "<connection string>";
 const uri = "mongodb://127.0.0.1:27017";
-mongoose.connect(uri, { dbName: 'db_POKE', });
+mongoose.connect(uri, { dbName: 'db_POKE01', });
 //Registra o Model em index.js
 requireDir("./models");
 // Redireciona o caminho http://localhost:3000/api para o routes

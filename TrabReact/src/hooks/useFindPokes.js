@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import axios from "axios";
 
 export function useFindPokes() {
@@ -7,13 +7,14 @@ export function useFindPokes() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    async function listPokemonsuseFindPokes() {
+    const fetchData = useCallback(async () => {
         try {
+            setLoading(true);
+            setError(null);
 
             await new Promise(resolve => setTimeout(resolve, 1500));
 
-            const result = await
-                axios.get('http://localhost:3001/api/Poke');
+            const result = await axios.get('http://localhost:3001/api/Poke');
             setLoading(false);
 
             if (result.data) {
@@ -26,13 +27,15 @@ export function useFindPokes() {
             setData([]);
             setLoading(false);
         }
-    };
+    }, []);
 
     useEffect(() => {
-        setLoading(true);
-        setError(null);
+        fetchData();
+    }, [fetchData]);
 
-        listPokemonsuseFindPokes();
-    }, []);
-    return { data, loading, error };
+    const refetch = useCallback(() => {
+        fetchData();
+    }, [fetchData]);
+
+    return { data, loading, error, refetch };
 }
