@@ -2,7 +2,6 @@ import React from 'react';
 import { useFindPokes } from './../hooks/useFindPokes';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
-//import { createRandomPokedexEntry } from '../../../Api/models/Pokemons'; // Importe aqui usando a sintaxe ES6
 
 const Home = () => {
   const { data, loading, error, refetch } = useFindPokes();
@@ -22,7 +21,6 @@ const Home = () => {
   const onDeletePoke = async (id) => {
     try {
       await axios.delete(`http://localhost:3001/api/Poke/${id}`);
-      alert("Pokemon excluído!");
       refetch(); // Recarrega os dados após a exclusão
     } catch (error) {
       console.error(error);
@@ -30,14 +28,21 @@ const Home = () => {
     }
   };
 
-  // const onCreateRandomPokedexEntry = async () => { // Função para criar um novo registro aleatório
-  //   await createRandomPokedexEntry();
-  //   refetch(); // Recarrega os dados após a criação
-  // };
+  const onCreateRandomPokedexEntry = async () => { // Função para criar um novo registro aleatório
+    try {
+    await axios.post(`http://localhost:3001/api/Poke/CreateRandom`);
+    refetch(); // Recarrega os dados após a criação
+     } catch (error) {
+    console.error(error);
+    alert("Erro ao criar o Pokemon!");
+    }
+  };
 
   return (
     <div className="app-container">
       <h1 className="app-title">Lista de Pokemons</h1>
+      <button id="Add" onClick={onAddPoke}>Adicionar</button>
+      <button onClick={onCreateRandomPokedexEntry}>Criar Pokemon Aleatório</button> {/* Botão para criar um novo registro aleatório */}      
       <div className="poke-list">
         {data &&
           data.length > 0 &&
@@ -51,8 +56,6 @@ const Home = () => {
             />
           ))}
       </div>
-      <button id="Add" onClick={onAddPoke}>Adicionar</button>
-
     </div>
   );
 };
@@ -73,7 +76,7 @@ function PokeItem({ title, species, onDelete, onEdit }) {
   return (
     <div className="poke-item">
       <strong className="poke-title">{title}</strong>
-      <img src={`https://projectpokemon.org/images/normal-sprite/${title}.gif`} alt={title} style={{ width: '50px', height: '50px' }} />
+      <img src={`https://projectpokemon.org/images/normal-sprite/${title.toLowerCase()}.gif`} alt={title} style={{ width: '50px', height: '50px' }} />
       <p className="poke-description">{species}</p>
       <div className="button-group">
         <button onClick={onEdit} id="Editar">

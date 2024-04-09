@@ -30,3 +30,6 @@ Content-Type: application/json
 
 ### Exclui uma conta específica
 DELETE {{baseUrl}}/api/Poke/66077424818852eececedcff
+
+### Pesquisa todos os cursos
+POST {{baseUrl}}/api/Poke/1

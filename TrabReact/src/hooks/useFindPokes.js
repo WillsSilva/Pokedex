@@ -12,7 +12,7 @@ export function useFindPokes() {
             setLoading(true);
             setError(null);
 
-            await new Promise(resolve => setTimeout(resolve, 1500));
+            await new Promise(resolve => setTimeout(resolve, 0));
 
             const result = await axios.get('http://localhost:3001/api/Poke');
             setLoading(false);

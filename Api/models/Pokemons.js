@@ -39,11 +39,11 @@ const Pokedex = mongoose.model("Pokedex", Pokedexchema);
 const usedNumbers = new Set();
 
 const namesBySpecies = {
-    "Planta": ["bulbasaur", "ivysaur", "venusaur"],
-    "Fogo": ["charmander", "charmeleon", "charizard", "chimchar"],
-    "Agua": ["squirtle", "wartortle", "blastoise", "piplup"],
-    "Normal": ["rattata", "raticate", "pidgey"],
-    "Terra": ["diglett", "dugtrio", "torterra"],    
+    "Planta": ["Bulbasaur", "Ivysaur", "Venusaur"],
+    "Fogo": ["Charmander", "Charmeleon", "Charizard", "Chimchar"],
+    "Agua": ["Squirtle", "Wartortle", "Blastoise", "Piplup","Psyduck"],
+    "Normal": ["Rattata", "Raticate", "Pidgey"],
+    "Terra": ["Diglett", "Dugtrio", "Torterra"],    
 };
 
 const speciesList = ["Planta", "Fogo", "Agua", "Normal"];
@@ -81,7 +81,7 @@ const generateRandomPokedexData = () => {
     };
 };
 
-const createRandomPokedexEntry = async () => {
+async function createRandomPokedexEntry() {
     try {
         const randomPokedexData = generateRandomPokedexData();
         const newEntry = await Pokedex.create(randomPokedexData);
@@ -90,7 +90,7 @@ const createRandomPokedexEntry = async () => {
     } catch (error) {
         console.error("Erro ao criar novo registro na Pokedex:", error);
     }
-};
+}
 
 module.exports = {
     createRandomPokedexEntry
