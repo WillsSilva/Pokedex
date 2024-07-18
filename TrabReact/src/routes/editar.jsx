@@ -28,7 +28,7 @@ const Editar = () => {
           setEditedPokemon(response.data);
         })
         .catch((error) => {
-          console.error(error);
+          console.error('Erro ao buscar dados da API:', error);
         });
     } else {
       setIsEditing(false);
@@ -62,7 +62,7 @@ const Editar = () => {
             if (response.status === 201) alert("Pokemon adicionado!");
           })
           .catch((error) => {
-            console.error(error);
+            console.error('Erro ao salvar os dados:', error);
           });
       })
       .catch((validationError) => {

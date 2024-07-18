@@ -30,11 +30,11 @@ const Home = () => {
 
   const onCreateRandomPokedexEntry = async () => { // Função para criar um novo registro aleatório
     try {
-    await axios.post(`http://localhost:3001/api/Poke/CreateRandom`);
-    refetch(); // Recarrega os dados após a criação
-     } catch (error) {
-    console.error(error);
-    alert("Erro ao criar o Pokemon!");
+      await axios.post(`http://localhost:3001/api/Poke/CreateRandom`);
+      refetch(); // Recarrega os dados após a criação
+    } catch (error) {
+      console.error(error);
+      alert("Erro ao criar o Pokemon!");
     }
   };
 
@@ -46,13 +46,13 @@ const Home = () => {
       <div className="poke-list">
         {data &&
           data.length > 0 &&
-          data.map((item, index) => (
+          data.map((item) => (
             <PokeItem
-              key={item._id}
+              key={item.id} // Use um campo único como `id` em vez de `_id`
               title={item.name}
               species={item.species}
-              onEdit={() => onEditPoke(item._id)}
-              onDelete={() => onDeletePoke(item._id)}
+              onEdit={() => onEditPoke(item.id)} // Consistência com o uso do `id`
+              onDelete={() => onDeletePoke(item.id)} // Consistência com o uso do `id`
             />
           ))}
       </div>
